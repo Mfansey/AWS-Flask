@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block content %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">S</th>
+      <th scope="col">Q</th>
+      <th scope="col">R</th>
+      <th scope="col">D</th>
+      <th scope="col">π estimate</th>
+      <th scope="col">cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in items %}
+    <tr>
+      <th scope="row">{{ i["s"]}}</th>
+      <td>{{ i["q"]}}</td>
+      <td>{{i["r"]}}</td>
+      <td>{{i["d"]}}</td>
+      <td>{{ i["pi_estimate"] }}</td>
+      <td>{{i["cost"]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

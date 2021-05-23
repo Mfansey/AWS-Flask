@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% block chart %}
+<script
+  type="text/javascript"
+  src="https://www.gstatic.com/charts/loader.js"
+></script>
+<script type="text/javascript">
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart);
+
+  var myarr = {{pi_estimations|tojson}}
+  console.log(myarr)
+
+  var pi_es = [["run", "pi estimate", "pi"],]
+
+  for (i = 0; i < myarr.length; i++) {
+    pi_es.push([i,myarr[i],3.14])
+  }
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable(pi_es);
+
+    var options = {
+      title: "pi estimates",
+      curveType: "function",
+      legend: { position: "bottom" },
+    };
+
+    var chart = new google.visualization.LineChart(
+      document.getElementById("curve_chart")
+    );
+
+    chart.draw(data, options);
+  }
+</script>
+
+<script>
+  function clearBox(elementID) {
+    document.getElementById(elementID).innerHTML = "";
+  }
+</script>
+
+{% endblock %} {% block content %}
+<div class="container" style="width: auto; height: auto">
+  <div class="row">
+    <div class="col-md-6">
+      <div id="curve_chart" style="width: auto; height: auto"></div>
+      <p>
+        Estimated value of π is {{pi_estimate}} (Actual: 3.14159265359) Shots
+        taken are ..... Runtime of ..... Estimated cost is .....
+      </p>
+      <br />
+    </div>
+  </div>
+  <button
+    type="submit"
+    onclick="clearBox('the_table')"
+    class="btn btn-warning ml-1 my-1"
+  >
+    Reset
+  </button>
+  <div class="row">
+    <div class="col-md-6">
+      <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Resource ID</th>
+              <th scope="col">InCircle</th>
+              <th scope="col">Shots</th>
+            </tr>
+          </thead>
+          <tbody id="the_table">
+            {% for i in res %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+              <td>{{ i[0] }}</td>
+              <td>{{ i[1] }}</td>
+              <td>{{ i[2] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
